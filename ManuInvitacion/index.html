@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Un Verano Chévere de Manuelaaaaaaa!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Londrina+Sketch&family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --rojo-lapiz: #ff4b4b;
+            --azul-marcador: #3b82f6;
+            --amarillo-sol: #fbbf24;
+            --verde-palmera: #22c55e;
+            --gris-grafito: #333333;
+            --fondo-arena: #fdfbf7;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--fondo-arena);
+            /* Textura de papel punteada como en tu imagen */
+            background-image: radial-gradient(#d1cdb8 2px, transparent 2px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        /* TIPOGRAFÍAS */
+        .texto-normal { color: var(--gris-grafito); }
+        .texto-bloque { font-family: 'Londrina Sketch', cursive; color: var(--amarillo-sol); text-shadow: 2px 2px 0px var(--rojo-lapiz); }
+        .texto-cursiva { font-family: 'Caveat', cursive; color: var(--rojo-lapiz); }
+        .texto-marcador { font-family: 'Permanent Marker', cursive; color: var(--azul-marcador); }
+
+        /* PANTALLA DE PORTADA */
+        #pantalla-portada {
+            text-align: center;
+            position: fixed;
+            z-index: 50;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--fondo-arena);
+            background-image: radial-gradient(#d1cdb8 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+
+        .cover-title-bottom {
+            font-size: 3rem;
+            margin: 0;
+            margin-bottom: 5px; /* Espacio hacia "CHÉVERE" */
+            transform: rotate(-1deg);
+        }
+
+        .cover-title-top {
+            font-size: 6rem;
+            margin: 0;
+            margin-bottom: 30px; /* Espacio hacia el botón */
+            line-height: 1;
+            transform: rotate(-3deg);
+        }   
+
+        /* --- NUEVO CONTENEDOR PARA AGRUPAR TEXTO, BOTÓN Y FOTOS ALREDEDOR --- */
+        .contenedor-central-portada {
+            position: relative; /* Necesario para posicionar las fotos absolutamente */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px; /* Espacio interno de seguridad */
+            width: auto;
+            max-width: 90%; /* Responsivo */
+        }
+
+        .btn-entrar {
+            margin-top: 50px;
+            padding: 25px 50px;
+            font-size: 1.3rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 4px solid var(--azul-marcador);
+            color: var(--azul-marcador);
+            cursor: pointer;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            transition: all 0.3s ease;
+            transform: rotate(2deg);
+            font-family: 'Patrick Hand', cursive;
+            font-weight: bold;
+        }
+
+        .btn-entrar:hover {
+            background-color: var(--azul-marcador);
+            color: white;
+            transform: rotate(-2deg) scale(1.1);
+        }
+
+        /* --- NUEVOS ESTILOS PARA LAS IMÁGENES DE DECORACIÓN --- */
+        .img-doodle-portada {
+            position: absolute;
+            pointer-events: none; /* No bloquean el clic del botón */
+            height: auto;
+            z-index: -1; /* Se colocan detrás del texto y botón si hay solape */
+            opacity: 0.9; /* Efecto garabato: ligera transparencia */
+            /* Efecto garabato: ligera rotación por defecto */
+            transition: transform 0.3s ease;
+            /* Placeholder visual mientras no hay imagen */
+            border: 2px dashed rgba(0,0,0,0.1);
+            background-color: rgba(0,0,0,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* Posiciones específicas para rodear el bloque central (Originales de image_0.png) */
+        /* --- NUEVO: ANIMACIONES CSS PARA EL MOVIMIENTO DE LAS FOTOS --- */
+        .img-ul { top: -50px; left: -100px; width: 170px; animation: flotar-polaroid-ul 6s ease-in-out infinite alternate; } /* Arriba-Izq (Stilacho) */
+        .img-ur { top: -40px; right: -90px; width: 150px; animation: flotar-polaroid-ur 6s ease-in-out infinite alternate; }  /* Arriba-Der (Elecciones) */
+        .img-bl { bottom: 30px; left: -110px; width: 140px; animation: flotar-polaroid-bl 6s ease-in-out infinite alternate; } /* Abajo-Izq (Shiiaaa) */
+        .img-br { bottom: 40px; right: -100px; width: 120px; animation: flotar-polaroid-br 6s ease-in-out infinite alternate; } /* Abajo-Der (Mood) */
+
+        /* ANIMACIONES ESPECÍFICAS Y RÍTMICAS PARA CADA POLAROID (Movimiento suave de oleaje flotante) */
+        @keyframes flotar-polaroid-ul {
+            0% { transform: translate(0px, 0px) rotate(-12deg); }
+            100% { transform: translate(5px, -5px) rotate(-9deg); }
+        }
+        @keyframes flotar-polaroid-ur {
+            0% { transform: translate(0px, 0px) rotate(8deg); }
+            100% { transform: translate(5px, -5px) rotate(11deg); }
+        }
+        @keyframes flotar-polaroid-bl {
+            0% { transform: translate(0px, 0px) rotate(5deg); }
+            100% { transform: translate(5px, -5px) rotate(8deg); }
+        }
+        @keyframes flotar-polaroid-br {
+            0% { transform: translate(0px, 0px) rotate(-10deg); }
+            100% { transform: translate(5px, -5px) rotate(-7deg); }
+        }
+
+        /* Ajustes responsivos para móvil */
+        @media (max-width: 600px) {
+            #pantalla-portada .cover-title-top { font-size: 4rem; }
+            #pantalla-portada .cover-title-bottom { font-size: 2rem; }
+            .img-doodle-portada { width: 70px; } /* Imágenes más pequeñas en móvil */
+            .img-ul { top: -40px; left: -40px; }
+            .img-ur { top: -30px; right: -35px; }
+            .img-bl { bottom: 15px; left: -50px; }
+            .img-br { bottom: 20px; right: -40px; }
+        }
+
+        .pencil-text-elecciones {
+            position: absolute;
+            /* Posicionamiento en el espacio blanco superior derecho, encima de la bandera de elecciones.jpeg */
+            top: -35%; 
+            right: -40%; 
+            width: 100%; /* Ancho controlado para el texto */
+            
+            /* Estilo de lápiz mal escrito */
+            font-family: 'Architects Daughter', cursive;
+            font-size: 1.3rem;
+            color: var(--gris-grafito); /* Imitar grafito */
+            opacity: 0.8;
+            transform: rotate(-3deg); /* Rotación natural contra la tarjeta */
+            text-align: left;
+            line-height: 1.1;
+            letter-spacing: 0.05em;
+            pointer-events: none; /* No bloquea el clic de la tarjeta */
+        }
+        /* --- FIN NUEVOS ESTILOS --- */
+
+        /* --- NUEVOS ESTILOS PARA DIBUJOS DECORATIVOS EN LA PORTADA --- */
+        /* Reusando la lógica de la invitación para garabatos mal coloreados y chuecos */
+        .doodle-cover {
+            position: absolute;
+            animation: flotar 4s ease-in-out infinite alternate;
+            opacity: 0.8; /* Efecto garabato: ligera transparencia */
+            pointer-events: none; /* No interfieren con el botón */
+        }
+
+        .doodle-cover svg { width: 100%; height: 100%; overflow: visible; }
+
+        /* Posiciones específicas para los dibujos decorativos de la portada */
+        .cover-sol { width: 150px; top: -20px; left: -20px; animation-delay: 0s; }
+        .cover-e-1 { width: 40px; top: 10%; right: 10%; animation-delay: 1s; }
+        .cover-e-2 { width: 40px; bottom: 15%; right: 15%; animation-delay: 3s; }
+        .cover-e-3 { width: 35px; top: 25%; right: 30%; animation-delay: 1.5s; }
+        .cover-palmera-1 { width: 120px; top: 10%; right: -10px; animation-delay: 0.5s; transform: rotate(-15deg); }
+        .cover-palmera-2 { width: 150px; bottom: 100px; left: -20px; animation-delay: 1s; transform: rotate(10deg); }
+        .cover-caballito-1 { width: 60px; bottom: 10%; left: 10%; animation-delay: 2s; transform: rotate(15deg); }
+
+        /* --- FIN NUEVOS ESTILOS --- */
+
+        /* PANTALLA DE INVITACIÓN (Original, SIN MODIFICACIONES) */
+        #pantalla-invitacion {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .tarjeta-datos {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 60px 40px;
+            border: 3px solid var(--gris-grafito);
+            border-radius: 10px 15px 25px 10px/15px 20px 10px 25px; 
+            text-align: center;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
+            max-width: 450px;
+            width: 85%;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px; /* Mucho espacio para el mar abajo */
+        }
+
+        .tarjeta-datos h2 { font-size: 2.5rem; margin: 0; transform: rotate(-2deg); }
+        .tarjeta-datos h3 { font-size: 4rem; margin: -5px 0 10px 0; letter-spacing: 2px; }
+
+        .detalles {
+            font-size: 1.3rem;
+            margin: 35px 0;
+            text-align: left;
+            border-left: 5px solid var(--amarillo-sol);
+            padding-left: 20px;
+            border-radius: 20px;
+        }
+
+        .detalles p { margin: 15px 0; line-height: 1.3; }
+
+        .secreto {
+            display: inline-block;
+            background-color: var(--gris-grafito);
+            color: white;
+            padding: 4px 12px;
+            transform: rotate(-2deg);
+            border-radius: 5px;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        /* FONDO DE GARABATOS (Original Completo Restaurado) */
+        #fondo-garabatos {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .doodle {
+            position: absolute;
+            animation: flotar 4s ease-in-out infinite alternate;
+        }
+
+        .doodle svg { width: 100%; height: 100%; overflow: visible; }
+
+        @keyframes flotar {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        /* Posiciones de cada dibujo en el fondo (Exactamente como antes) */
+        .sol { width: 180px; top: -30px; left: -30px; animation-delay: 0s; }
+        .palmera-izq { width: 150px; bottom: 100px; left: -20px; animation-delay: 1s; transform: rotate(10deg); }
+        .palmera-der { width: 120px; top: 10%; right: -10px; animation-delay: 0.5s; transform: rotate(-15deg); }
+        .caballito-1 { width: 80px; top: 20%; left: 10%; animation-delay: 1.2s; transform: rotate(-10deg); }
+        .caballito-2 { width: 60px; bottom: 30%; right: 5%; animation-delay: 2s; transform: rotate(15deg); }
+        .estrella-mar-1 { width: 90px; bottom: 20%; left: 15%; animation-delay: 0.7s; }
+        .estrella-mar-2 { width: 70px; top: 40%; right: 10%; animation-delay: 1.8s; transform: rotate(45deg); }
+        
+        /* Estrellitas esparcidas */
+        .e-1 { width: 40px; top: 10%; left: 40%; } .e-2 { width: 50px; top: 5%; right: 25%; }
+        .e-3 { width: 30px; top: 30%; left: 2%; } .e-4 { width: 45px; top: 50%; left: 12%; }
+        .e-5 { width: 35px; top: 25%; right: 30%; } .e-6 { width: 60px; top: 60%; right: 2%; }
+        .e-7 { width: 40px; bottom: 40%; left: 5%; }
+
+        /* --- NUEVOS ESTILOS PARA LA CHICA EN EL BARCO (Integración de Experto) --- */
+        .barco-con-chica {
+            width: 250px; /* Tamaño del conjunto */
+            position: absolute;
+            z-index: 2; /* Justo sobre el mar, debajo de la tarjeta */
+            left: 20%; /* Posición horizontal */
+            bottom: 60px; /* Posición vertical sobre el mar */
+            pointer-events: none;
+            /* Animación de oleaje específico del barco */
+            animation: movimiento-barco 6s ease-in-out infinite alternate;
+        }
+
+        .barco-con-chica svg { width: 100%; height: 100%; overflow: visible; }
+
+        @keyframes movimiento-barco {
+            0% { transform: translateX(0px) translateY(0px) rotate(3deg); }
+            50% { transform: translateX(10px) translateY(-8px) rotate(0deg); }
+            100% { transform: translateX(-10px) translateY(5px) rotate(-3deg); }
+        }
+        /* --- FIN NUEVOS ESTILOS --- */
+
+        /* El mar ocupa todo el ancho abajo */
+        .mar {
+            width: 100%;
+            height: 150px;
+            bottom: -10px;
+            left: 0;
+            animation: oleaje 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes oleaje {
+            0% { transform: translateX(-10px) translateY(5px); }
+            100% { transform: translateX(10px) translateY(-5px); }
+        }
+
+        /* Clases de control JS */
+        .activa { opacity: 1 !important; pointer-events: auto !important; transform: scale(1) !important; }
+        .oculta { opacity: 0 !important; pointer-events: none !important; transform: scale(1.1) !important; }
+    </style>
+</head>
+<body>
+
+    <audio id="musica-fondo" loop>
+        <source src="chevere.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="pantalla-portada">
+        
+        <div class="doodle-cover cover-sol">
+            <svg viewBox="0 0 150 150">
+                <path d="M 40 40 Q 100 20 110 80 Q 100 130 50 110 Q 20 80 40 40 Z" fill="var(--amarillo-sol)" opacity="0.6"/>
+                <path d="M20 75 L120 75 M75 20 L75 120 M30 30 L110 110 M110 30 L30 110" stroke="var(--amarillo-sol)" stroke-width="15" opacity="0.4"/>
+                <circle cx="75" cy="75" r="35" fill="none" stroke="var(--gris-grafito)" stroke-width="3"/>
+                <path d="M75 25 L75 15 M75 125 L75 135 M25 75 L15 75 M125 75 L135 75 M40 40 L30 30 M110 110 L120 120 M110 40 L120 30 M40 110 L30 120" stroke="var(--gris-grafito)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <svg class="doodle-cover cover-e-1" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+        <svg class="doodle-cover cover-e-2" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+        <svg class="doodle-cover cover-e-3" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+
+        <div class="doodle-cover cover-palmera-1"><svg viewBox="0 0 100 150"><path d="M45 150 Q60 80 50 30 L55 30 Q70 80 55 150" fill="#a16207" opacity="0.5"/><path d="M50 30 C10 10 0 40 0 40 C20 30 40 35 50 30 C70 10 100 30 100 30 C80 30 60 40 50 30 C30 60 10 80 10 80 C30 70 40 60 50 30 C70 60 90 80 90 80 C70 70 60 60 50 30" fill="#22c55e" opacity="0.4"/><path d="M45 150 Q55 80 50 30 M55 150 Q65 80 50 30" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/><path d="M50 30 Q30 5 0 35 M50 30 Q70 5 100 35 M50 30 Q30 50 10 80 M50 30 Q70 50 90 80" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/></svg></div>
+        <div class="doodle-cover cover-palmera-2"><svg viewBox="0 0 100 150"><path d="M45 150 Q30 80 50 30 L55 30 Q45 80 55 150" fill="#a16207" opacity="0.5"/><path d="M50 30 C10 10 0 40 0 40 C20 30 40 35 50 30 C70 10 100 30 100 30 C80 30 60 40 50 30 C30 60 10 80 10 80 C30 70 40 60 50 30 C70 60 90 80 90 80 C70 70 60 60 50 30" fill="#22c55e" opacity="0.4"/><path d="M45 150 Q35 80 50 30 M55 150 Q45 80 50 30" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/><path d="M50 30 Q30 5 0 35 M50 30 Q70 5 100 35 M50 30 Q30 50 10 80 M50 30 Q70 50 90 80 M50 30 Q50 -10 50 -15" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/></svg></div>
+
+        <div class="doodle-cover cover-caballito-1"><svg viewBox="0 0 100 100"><path d="M40 20 C60 20 60 50 50 60 C40 70 40 80 50 90 L60 85 C60 75 70 55 50 45 C45 35 45 25 40 20 Z" fill="#ec4899" opacity="0.5"/><path d="M45 15 C65 15 60 40 50 50 C30 60 40 80 50 90 C70 80 70 50 55 42 M45 15 L35 20 L40 25 M55 15 L50 20 M60 25 L55 30 L65 35 M60 45 L65 50" stroke="var(--gris-grafito)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="45" cy="20" r="2" fill="var(--gris-grafito)"/></svg></div>
+
+        <div class="contenedor-central-portada">
+            
+            <img src="chevere mood.jpeg" alt="foto arriba izq" class="img-doodle-portada img-ul">
+            
+            <img src="elecciones.jpeg" alt="foto arriba der" class="img-doodle-portada img-ur">
+
+            <div class="pencil-text-elecciones">NI LAS ELECCIONES PODRÁN PARAR ESTE GRAN EVENTO</div>
+            
+            <h1 class="texto-cursiva cover-title-bottom">Un Cumpleaños</h1> 
+            <h1 class="texto-bloque cover-title-top">CHÉVERE</h1>
+            
+            <button id="btn-entrar" class="btn-entrar">¡Entraaaaaaaaa!</button>
+            
+            <img src="shiiaaa.jpeg" alt="foto abajo izq" class="img-doodle-portada img-bl">
+            
+            <img src="stilacho.jpeg" alt="foto abajo der" class="img-doodle-portada img-br">
+
+        </div>
+        
+    </div>
+
+    <div id="pantalla-invitacion">
+        
+        <div id="fondo-garabatos">
+            
+            <div class="doodle sol">
+                <svg viewBox="0 0 150 150">
+                    <path d="M 40 40 Q 100 20 110 80 Q 100 130 50 110 Q 20 80 40 40 Z" fill="var(--amarillo-sol)" opacity="0.6"/>
+                    <path d="M20 75 L120 75 M75 20 L75 120 M30 30 L110 110 M110 30 L30 110" stroke="var(--amarillo-sol)" stroke-width="15" opacity="0.4"/>
+                    <circle cx="75" cy="75" r="35" fill="none" stroke="var(--gris-grafito)" stroke-width="3"/>
+                    <path d="M75 25 L75 15 M75 125 L75 135 M25 75 L15 75 M125 75 L135 75 M40 40 L30 30 M110 110 L120 120 M110 40 L120 30 M40 110 L30 120" stroke="var(--gris-grafito)" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="doodle palmera-izq"><svg viewBox="0 0 100 150"><path d="M45 150 Q30 80 50 30 L55 30 Q45 80 55 150" fill="#a16207" opacity="0.5"/><path d="M50 30 C10 10 0 40 0 40 C20 30 40 35 50 30 C70 10 100 30 100 30 C80 30 60 40 50 30 C30 60 10 80 10 80 C30 70 40 60 50 30 C70 60 90 80 90 80 C70 70 60 60 50 30" fill="#22c55e" opacity="0.4"/><path d="M45 150 Q35 80 50 30 M55 150 Q45 80 50 30" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/><path d="M50 30 Q30 5 0 35 M50 30 Q70 5 100 35 M50 30 Q30 50 10 80 M50 30 Q70 50 90 80 M50 30 Q50 -10 50 -15" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/></svg></div>
+            <div class="doodle palmera-der"><svg viewBox="0 0 100 150"><path d="M45 150 Q60 80 50 30 L55 30 Q70 80 55 150" fill="#a16207" opacity="0.5"/><path d="M50 30 C10 10 0 40 0 40 C20 30 40 35 50 30 C70 10 100 30 100 30 C80 30 60 40 50 30 C30 60 10 80 10 80 C30 70 40 60 50 30 C70 60 90 80 90 80 C70 70 60 60 50 30" fill="#22c55e" opacity="0.4"/><path d="M45 150 Q55 80 50 30 M55 150 Q65 80 50 30" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/><path d="M50 30 Q30 5 0 35 M50 30 Q70 5 100 35 M50 30 Q30 50 10 80 M50 30 Q70 50 90 80" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/></svg></div>
+
+            <div class="doodle caballito-1"><svg viewBox="0 0 100 100"><path d="M40 20 C60 20 60 50 50 60 C40 70 40 80 50 90 L60 85 C60 75 70 55 50 45 C45 35 45 25 40 20 Z" fill="#ec4899" opacity="0.5"/><path d="M45 15 C65 15 60 40 50 50 C30 60 40 80 50 90 C70 80 70 50 55 42 M45 15 L35 20 L40 25 M55 15 L50 20 M60 25 L55 30 L65 35 M60 45 L65 50" stroke="var(--gris-grafito)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="45" cy="20" r="2" fill="var(--gris-grafito)"/></svg></div>
+            <div class="doodle caballito-2"><svg viewBox="0 0 100 100"><path d="M40 20 C60 20 60 50 50 60 C40 70 40 80 50 90 L60 85 C60 75 70 55 50 45 C45 35 45 25 40 20 Z" fill="#8b5cf6" opacity="0.5"/><path d="M45 15 C65 15 60 40 50 50 C30 60 40 80 50 90 C70 80 70 50 55 42 M45 15 L35 20 L40 25 M55 15 L50 20 M60 25 L55 30 L65 35 M60 45 L65 50" stroke="var(--gris-grafito)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="45" cy="20" r="2" fill="var(--gris-grafito)"/></svg></div>
+            <div class="doodle estrella-mar-1"><svg viewBox="0 0 100 100"><path d="M50 20 L60 40 L80 45 L65 65 L70 85 L50 75 L30 85 L35 65 L20 45 L40 40 Z" fill="#f97316" opacity="0.5" stroke="#f97316" stroke-width="10"/><path d="M50 10 L60 35 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 35 Z" stroke="var(--gris-grafito)" stroke-width="3" fill="none" stroke-linejoin="round"/><circle cx="45" cy="50" r="2" fill="var(--gris-grafito)"/><circle cx="55" cy="50" r="2" fill="var(--gris-grafito)"/><path d="M45 55 Q50 60 55 55" stroke="var(--gris-grafito)" stroke-width="2" fill="none"/></svg></div>
+            <div class="doodle estrella-mar-2"><svg viewBox="0 0 100 100"><path d="M50 20 L60 40 L80 45 L65 65 L70 85 L50 75 L30 85 L35 65 L20 45 L40 40 Z" fill="#ef4444" opacity="0.5" stroke="#ef4444" stroke-width="10"/><path d="M50 10 L60 35 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 35 Z" stroke="var(--gris-grafito)" stroke-width="3" fill="none" stroke-linejoin="round"/><circle cx="45" cy="50" r="2" fill="var(--gris-grafito)"/><circle cx="55" cy="50" r="2" fill="var(--gris-grafito)"/></svg></div>
+
+            <svg class="doodle e-1" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-2" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-3" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-4" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-5" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-6" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+            <svg class="doodle e-7" viewBox="0 0 100 100"><path d="M50 15 L60 40 L85 45 L65 65 L70 90 L50 75 L30 90 L35 65 L15 45 L40 40 Z" fill="var(--amarillo-sol)" opacity="0.4"/><path d="M50 5 L58 40 L95 45 L65 65 L70 95 L50 75 L30 95 L35 65 L5 45 L42 40 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linejoin="round"/></svg>
+
+            <div class="barco-con-chica">
+                <svg viewBox="0 0 200 250">
+                    <path d="M 20 200 L 180 200 L 200 180 L 170 120 L 30 120 L 0 180 Z" fill="#e5e7eb" opacity="0.6" stroke="var(--gris-grafito)" stroke-width="4"/>
+                    <path d="M 0 180 L 100 160 L 200 180" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/>
+                    <path d="M 100 160 L 100 200" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/>
+                    <path d="M 30 120 L 100 80 L 170 120" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/>
+
+                    <g transform="translate(60, 20) scale(0.9)">
+                        <circle cx="45" cy="30" r="15" fill="var(--rojo-lapiz)" opacity="0.3" stroke="var(--gris-grafito)" stroke-width="4"/>
+                        <path d="M 32 20 Q 45 5 58 20 M 30 25 Q 45 10 60 25" fill="none" stroke="var(--gris-grafito)" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="40" cy="27" r="2" fill="var(--gris-grafito)"/>
+                        <circle cx="50" cy="27" r="2" fill="var(--gris-grafito)"/>
+                        <path d="M 38 38 Q 45 42 52 38" fill="none" stroke="var(--gris-grafito)" stroke-width="3" stroke-linecap="round"/>
+                        
+                        <path d="M 45 45 L 45 110" fill="none" stroke="var(--gris-grafito)" stroke-width="5"/>
+                        <path d="M 45 50 Q 25 60 30 85 Q 30 85 35 88" fill="none" stroke="var(--gris-grafito)" stroke-width="4"/>
+                        <path d="M 45 50 Q 65 60 62 85" fill="none" stroke="var(--gris-grafito)" stroke-width="4"/>
+                        
+                        <path d="M 35 110 L 55 110 L 52 130 L 38 130 Z" fill="#facc15" opacity="0.4" stroke="var(--gris-grafito)" stroke-width="4"/>
+                        <path d="M 38 130 L 35 160 M 52 130 L 55 160" stroke="var(--gris-grafito)" stroke-width="4" fill="none"/>
+                        <path d="M 30 160 L 38 163 Q 38 160 30 160 Z M 52 163 L 60 160 Q 52 160 52 163 Z" fill="none" stroke="var(--gris-grafito)" stroke-width="4"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="doodle mar">
+                <svg viewBox="0 0 1000 150" preserveAspectRatio="none" style="width:100%; height:100%;">
+                    <path d="M -50 40 Q 150 -20 300 60 T 600 20 T 1050 70 L 1050 200 L -50 200 Z" fill="#93c5fd" opacity="0.4"/>
+                    <path d="M -50 70 Q 200 -10 400 90 T 800 50 T 1050 100 L 1050 200 L -50 200 Z" fill="#3b82f6" opacity="0.4"/>
+                    <path d="M 0 60 Q 100 0 200 70 T 400 40 T 600 80 T 800 30 T 1000 90" stroke="#2563eb" stroke-width="8" fill="none" opacity="0.5"/>
+                    <path d="M -20 20 Q 50 -10 120 20 T 260 20 T 400 20 T 540 20 T 680 20 T 820 20 T 960 20 T 1050 20" stroke="var(--gris-grafito)" stroke-width="4" fill="none"/>
+                    <path d="M -20 50 Q 70 0 160 50 T 340 50 T 520 50 T 700 50 T 880 50 T 1050 50" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/>
+                    <path d="M 50 80 Q 100 50 150 80 M 450 100 Q 500 70 550 100 M 850 90 Q 900 60 950 90" stroke="var(--gris-grafito)" stroke-width="3" fill="none"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="tarjeta-datos">
+            <h2 class="texto-cursiva">Es el cumpleaños de</h2>
+            <h3 class="texto-bloque">Manuelaaaaaaa</h3>
+            
+            <p class="texto-normal" style="font-size: 1.2rem;">
+                Alista tu mejor outfit de playa. Mucho perreo, buenas vibras y una comida con vistas que no vas a olvidar.
+            </p>
+
+            <div class="detalles texto-normal">
+                <p><strong class="texto-marcador">DÍA:</strong> Sábado, 30 de mayo</p>
+                <p><strong class="texto-marcador">HORA:</strong> 15:30 PM</p>
+                <p><strong class="texto-marcador">LUGAR:</strong> <br>
+                    <span class="secreto">¡UBICACIÓN SECRETA! 🤫</span><br>
+                    <span style="font-size: 0.9rem; color: #666;">(Te enviaremos las coordenadas el día del evento)</span>
+                </p>
+            </div>
+
+            <p class="texto-cursiva" style="font-size: 2rem; text-align: right; margin-top: 10px;">¡Todos te esperamos!</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('btn-entrar').addEventListener('click', function() {
+            var musica = document.getElementById('musica-fondo');
+            // Reemplaza 'tu_cancion.mp3' con un archivo mp3 local para probar
+            musica.play().catch(function(e) { console.log("Verifica el archivo de audio."); });
+
+            document.getElementById('pantalla-portada').classList.add('oculta');
+            document.body.style.overflowX = 'hidden';
+            document.body.style.overflowY = 'auto'; // Permitir scroll vertical si es pantalla pequeña
+            document.getElementById('pantalla-invitacion').classList.add('activa');
+        });
+    </script>
+
+</body>
+</html>
+
+```
